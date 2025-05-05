@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Car" ADD COLUMN     "caution" FLOAT8 NOT NULL DEFAULT 0;
