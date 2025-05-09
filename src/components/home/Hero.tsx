@@ -13,7 +13,7 @@ export default function Hero(){
     return(
         <section className="h-[100dvh] max-w-[100dvw] overflow-hidden relative">
             <div className="flex flex-col-reverse md:flex-row 2xl:max-w-5xl md:h-[70%] px-5 2xl:px-0 mx-auto">
-                <div className="w-full md:w-[60%] h-fit pt-6 2xl:pt-0 my-auto content-center flex flex-col gap-6 md:gap-12 relative z-2">
+                <div className="w-full md:w-[60%] h-fit pt-12 2xl:pt-0 my-auto content-center flex flex-col gap-6 md:gap-12 relative z-2">
                     <h1 className="font-semibold text-center md:text-start text-2xl md:text-5xl">La Signature <br /> du Luxe Automobile <br /> Conduisez Votre Prestige</h1>
                     <p className="font-medium text-justify md:text-start text-sm md:text-base text-gray-500 md:max-w-[80%]">Quand l'Excellence Rencontre la Route : Des Bolides d'Exception pour des Instants Inoubliables. Notre Collection Privée de Véhicules Prestigieux Transforme Chaque Trajet en une Expérience Unique, Alliant Performance, Raffinement et Service Sur Mesure pour une Clientèle qui Ne Se Contente Que du Meilleur</p>
                     <div className="flex flex-row gap-6">

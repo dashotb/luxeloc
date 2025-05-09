@@ -59,3 +59,13 @@ body {
 .react-calendar__navigation button:enabled:focus {
   background-color: #f3f4f6;
 }
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}

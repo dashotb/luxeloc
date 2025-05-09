@@ -120,7 +120,7 @@ export default function VehiclePage({ params }: { params: { id: string } }) {
               value={dateRange}
               onChange={value => setDateRange(value as [Date | null, Date | null])}
               className="w-full max-w-md mx-auto bg-white rounded-lg shadow-lg p-4"
-              locale={fr}
+              locale={"fr"}
               nextLabel={<ChevronRight className="w-4 h-4" />}
               prevLabel={<ChevronLeft className="w-4 h-4" />}
               minDate={new Date()}
@@ -495,7 +495,7 @@ export default function VehiclePage({ params }: { params: { id: string } }) {
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.3 }}
-          className="bg-white p-8 rounded-xl shadow-xl h-fit lg:sticky lg:top-16 lg:mt-8 w-full lg:w-[33%]"
+          className="bg-white h-[80vh] p-5 overflow-y-scroll lg:sticky no-scrollbar lg:top-16 lg:mt-8 w-full lg:w-[33%]"
         >
           <h2 className="text-2xl font-semibold mb-8">Réservation</h2>
           <AnimatePresence mode="wait">
