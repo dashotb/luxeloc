@@ -136,7 +136,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\digit\\Prog\\luxeloc\\src\\generated\\prisma",
+      "value": "/home/project/src/generated/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -145,12 +145,12 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "windows",
+        "value": "debian-openssl-1.1.x",
         "native": true
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\digit\\Prog\\luxeloc\\prisma\\schema.prisma",
+    "sourceFilePath": "/home/project/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -164,11 +164,12 @@ const config = {
     "db"
   ],
   "activeProvider": "cockroachdb",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": "postgresql://dash:aCrT5XtRmR5lZj-KqLnKJA@stagger-15690.8nj.gcp-europe-west1.cockroachlabs.cloud:26257/luxeloc?sslmode=verify-full"
+        "value": null
       }
     }
   },
