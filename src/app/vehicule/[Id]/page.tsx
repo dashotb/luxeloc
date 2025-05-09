@@ -22,7 +22,7 @@ const slideIn = {
   exit: { x: -20, opacity: 0 }
 };
 
-export default function VehiclePage({ params }: { params: { id: string } }) {
+export default function VehiclePage({ params }: any) {
   const [step, setStep] = useState<BookingStep>("calendar");
   const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([null, null]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
