@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { ArrowRight } from "lucide-react";
 
 const categories = ["Populaire", "Sport", "Tout terrain", "Ville"];
 
@@ -77,8 +78,11 @@ export default function Cars() {
                 </div>
                 <h3 className="font-semibold text-lg md:text-xl mb-4 md:mb-6">{car.name}</h3>
                 <Link href={`/vehicule/${car.name.toLowerCase().replace(/ /g, '-')}`}>
-                  <button className="w-full py-3 border border-black hover:bg-black hover:text-white transition rounded">
-                    Réserver Maintenant
+                  <button className="w-full flex flex-row py-3 hover:bg-black hover:text-white transition transition duration-300 group">
+                    <p className="mx-auto flex flex-row ">
+                      Réserver Maintenant
+                      <ArrowRight className="w-5 ml-2 group-hover:translate-x-1 transition duration-300"/>
+                    </p>
                   </button>
                 </Link>
               </div>

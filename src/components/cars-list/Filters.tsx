@@ -24,7 +24,7 @@ export default function Filters({ isOpen, onClose }: FiltersProps) {
     <>
       {/* Search Bar - Desktop */}
       <div className="hidden md:block sticky top-24 w-[300px]">
-        <div className="bg-white rounded-2xl shadow-lg p-6 space-y-6">
+        <div className=" border-r border-r-gray-200 p-6 space-y-6">
           <div className="relative">
             <input
               type="text"

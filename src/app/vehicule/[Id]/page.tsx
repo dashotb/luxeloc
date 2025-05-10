@@ -58,10 +58,10 @@ export default function VehiclePage({ params }: any) {
       seats: 4,
     },
     prices: {
-      daily: 500,
+      jour: 500,
       weekend: 900,
-      weekly: 3000,
-      deposit: 2000,
+      semaine: 3000,
+      acompte: 2000,
     },
     description: "La Porsche Panamera Turbo S incarne la quintessence du luxe sportif. Avec son moteur V8 biturbo de 630 chevaux, elle offre des performances exceptionnelles tout en conservant un niveau de confort et de raffinement digne des meilleures berlines de luxe.",
   };
@@ -69,7 +69,7 @@ export default function VehiclePage({ params }: any) {
   const calculateTotal = () => {
     if (!dateRange[0] || !dateRange[1]) return 0;
     const days = differenceInDays(dateRange[1], dateRange[0]) + 1;
-    return days * vehicle.prices.daily;
+    return days * vehicle.prices.jour;
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, type: "driverLicense" | "identityCard" | "proofOfAddress") => {
@@ -377,7 +377,7 @@ export default function VehiclePage({ params }: any) {
                 </div>
                 <div className="flex justify-between items-center">
                   <span>Caution</span>
-                  <span className="font-semibold">{vehicle.prices.deposit}€</span>
+                  <span className="font-semibold">{vehicle.prices.acompte}€</span>
                 </div>
                 <div className="flex justify-between items-center pt-3 border-t">
                   <span>Acompte (25%)</span>
