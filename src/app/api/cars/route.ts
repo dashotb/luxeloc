@@ -7,9 +7,9 @@ export async function GET() {
     try {
         const session = await getServerSession(authOptions);
         
-        if (!session?.user || session.user.role !== 'ADMIN') {
-            return new NextResponse('Non autorisé', { status: 401 });
-        }
+        // if (!session?.user || session.user.role !== 'ADMIN') {
+        //     return new NextResponse('Non autorisé', { status: 401 });
+        // }
 
         const cars = await prisma.car.findMany();
         return NextResponse.json(cars);
