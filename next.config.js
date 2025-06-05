@@ -40,8 +40,14 @@ const nextConfig = {
   output: 'standalone',
   // Désactiver la compression
   compress: false,
-  // Désactiver la génération de pages statiques
+  // Forcer le rendu dynamique pour toutes les pages
   staticPageGenerationTimeout: 0,
+  // Désactiver la génération statique
+  outputFileTracing: false,
+  // Désactiver la génération de pages statiques
+  generateStaticParams: false,
+  // Forcer le rendu dynamique
+  dynamicParams: true,
 };
 
 module.exports = nextConfig;
