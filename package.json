@@ -6,12 +6,13 @@
     "dev": "next dev",
     "clean": "rm -rf .next",
     "postinstall": "prisma generate",
-    "build": "prisma generate && next build",
+    "build": "prisma generate && prisma db push && next build",
     "start": "next start",
     "lint": "next lint",
     "prisma:generate": "prisma generate",
     "prisma:push": "prisma db push",
-    "prisma:seed": "node prisma/seed.js"
+    "prisma:seed": "node prisma/seed.js",
+    "vercel-build": "prisma generate && next build"
   },
   "prisma": {
     "seed": "node prisma/seed.js"
