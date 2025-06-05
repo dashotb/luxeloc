@@ -215,6 +215,7 @@ export default function VehiclePage({ params }: { params: { id: string } }) {
       </div>
     );
   }
+  
 
   if (!vehicle) {
     return (
