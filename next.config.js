@@ -36,6 +36,12 @@ const nextConfig = {
     optimizeCss: false,
     scrollRestoration: true,
   },
+  // Désactiver la collecte des traces de build
+  output: 'standalone',
+  // Désactiver la compression
+  compress: false,
+  // Désactiver la génération de pages statiques
+  staticPageGenerationTimeout: 0,
 };
 
 module.exports = nextConfig;
