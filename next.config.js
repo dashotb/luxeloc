@@ -9,7 +9,7 @@ const nextConfig = {
     ],
     domains: ['firebasestorage.googleapis.com'],
   },
-  // Ignorer les fichiers problématiques pendant le build
+  // Configuration pour le build
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.resolve.fallback = {
@@ -25,6 +25,15 @@ const nextConfig = {
   },
   eslint: {
     ignoreDuringBuilds: true,
+  },
+  // Désactiver la génération de source maps en production
+  productionBrowserSourceMaps: false,
+  // Optimiser la configuration pour le build
+  swcMinify: true,
+  // Ignorer les fichiers problématiques
+  experimental: {
+    optimizeCss: true,
+    scrollRestoration: true,
   },
 };
 
