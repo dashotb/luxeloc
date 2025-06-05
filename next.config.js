@@ -30,9 +30,10 @@ const nextConfig = {
   productionBrowserSourceMaps: false,
   // Optimiser la configuration pour le build
   swcMinify: true,
-  // Ignorer les fichiers problématiques
+  // Configuration expérimentale
   experimental: {
-    optimizeCss: true,
+    // Désactiver l'optimisation CSS qui cause des problèmes
+    optimizeCss: false,
     scrollRestoration: true,
   },
 };
