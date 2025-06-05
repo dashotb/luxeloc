@@ -13,21 +13,21 @@ export default function Hero(){
     return(
         <section className="h-[100dvh] max-w-[100dvw] overflow-hidden relative">
             <div className="flex flex-col-reverse md:flex-row 2xl:max-w-5xl md:h-[70%] px-12 2xl:px-0 mx-auto">
-                <div className="w-full md:w-[60%] h-fit pt-12 2xl:pt-0 my-auto content-center flex flex-col gap-6 md:gap-12 relative z-2">
+                <div className="w-full md:w-[60%] h-fit pt-12 2xl:pt-0 my-auto content-center flex flex-col gap-6 md:gap-12 relative z-10">
                     <h1 className="font-semibold text-center md:text-start text-2xl md:text-5xl">La Signature <br /> du Luxe Automobile <br /> Conduisez Votre Prestige</h1>
                     <p className="font-medium text-justify md:text-start text-sm md:text-base text-gray-500 md:max-w-[80%]">Quand l'Excellence Rencontre la Route : Des Bolides d'Exception pour des Instants Inoubliables. Notre Collection Privée de Véhicules Prestigieux Transforme Chaque Trajet en une Expérience Unique, Alliant Performance, Raffinement et Service Sur Mesure pour une Clientèle qui Ne Se Contente Que du Meilleur</p>
                     <div className="flex flex-row gap-6">
-                        <Link href="">
+                        <Link href="/liste">
                             <button className="bg-black border border-white hover:border-black hover:bg-white hover:text-black transition duration-300 p-2 md:p-4 text-white text-sm md:text-base rounded-sm flex flex-row cursor-pointer group">Réserver un véhicule<ArrowRight className="ml-2 group-hover:translate-x-1 md:group-hover:translate-x-2 group-hover:text-black transition duration-300"/> </button>
                         </Link>
-                        <Link href="">
+                        <Link href="/a-propos">
                             <button className="m-2 md:m-4 hover:underline cursor-pointer transition duration-300">En savoir plus</button>
                         </Link>
                     </div>
                 </div>
                 <div className="w-full relative h-[25vh] md:absolute right-0 top-0 md:w-[50%] mt-8">
-                    <Image src={RS6} alt="" className="absolute mt-10 -top-2 -right-16 md:mt-0 mx-auto md:mx-0 ml-12 md:ml-0 w-[90dvw] md:w-[45dvw] md:-right-24 md:top-20 z-2" />
-                    <Image src={Map} alt="" className="absolute w-[100dvw] top-8 md:top-0 -right-12 md:right-0"/>
+                    <Image src={RS6} alt="" className="absolute mt-10 -top-2 -right-16 md:mt-0 mx-auto md:mx-0 ml-12 md:ml-0 w-[90dvw] md:w-[45dvw] md:-right-24 md:top-20 z-20" />
+                    <Image src={Map} alt="" className="absolute w-[100dvw] top-8 md:top-0 z-10 -right-12 md:right-0"/>
                 </div>
             </div>
             <div className="h-[20%] w-fit flex flex-row mx-auto gap-5 md:gap-24 items-center px-5 md:px-0">

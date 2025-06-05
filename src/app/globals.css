@@ -1,16 +1,12 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @import "react-calendar/dist/Calendar.css";
 
 :root {
   --background: #ffffff;
   --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
 }
 
 body {
@@ -34,7 +30,7 @@ body {
 .react-calendar__tile--active:enabled:hover,
 .react-calendar__tile--active:enabled:focus {
   background: #000;
-  color: white;
+  color: rgb(255, 0, 0);
 }
 
 .react-calendar__tile--now {
@@ -48,7 +44,7 @@ body {
 
 .react-calendar__tile:enabled:hover,
 .react-calendar__tile:enabled:focus {
-  background-color: #f3f4f6;
+  background-color: #f6f3f3;
 }
 
 .react-calendar__navigation button:disabled {

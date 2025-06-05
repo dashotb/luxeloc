@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Calendar from "react-calendar";
 import { ChevronLeft, ChevronRight, ArrowLeft, Upload } from "lucide-react";
 import { differenceInDays, format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { motion, AnimatePresence } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 type BookingStep = "calendar" | "info" | "payment";
 
@@ -22,10 +23,30 @@ const slideIn = {
   exit: { x: -20, opacity: 0 }
 };
 
-export default function VehiclePage({ params }: any) {
+interface Vehicle {
+  id: string;
+  name: string;
+  brand: string;
+  images: string[];
+  hp: number;
+  seats: number;
+  category: string;
+  daily_price: number;
+  weekend_price: number;
+  week_price: number;
+  description: string;
+  caution: number;
+}
+
+export default function VehiclePage({ params }: { params: { id: string } }) {
   const [step, setStep] = useState<BookingStep>("calendar");
   const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([null, null]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [vehicle, setVehicle] = useState<Vehicle | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [unavailableDates, setUnavailableDates] = useState<Date[]>([]);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [personalInfo, setPersonalInfo] = useState({
     firstName: "",
     lastName: "",
@@ -40,36 +61,45 @@ export default function VehiclePage({ params }: any) {
     identityCard: null as File | null,
     proofOfAddress: null as File | null
   });
+  const router = useRouter();
 
-  // Mock data - replace with actual API call
-  const vehicle = {
-    name: "Panamera Turbo S",
-    brand: "Porsche",
-    images: [
-      "https://images.pexels.com/photos/3752169/pexels-photo-3752169.jpeg",
-      "https://images.pexels.com/photos/3874337/pexels-photo-3874337.jpeg",
-      "https://images.pexels.com/photos/892522/pexels-photo-892522.jpeg",
-    ],
-    specs: {
-      power: "630ch",
-      acceleration: "3.1s",
-      maxSpeed: "315 km/h",
-      transmission: "PDK 8 vitesses",
-      seats: 4,
-    },
-    prices: {
-      jour: 500,
-      weekend: 900,
-      semaine: 3000,
-      acompte: 2000,
-    },
-    description: "La Porsche Panamera Turbo S incarne la quintessence du luxe sportif. Avec son moteur V8 biturbo de 630 chevaux, elle offre des performances exceptionnelles tout en conservant un niveau de confort et de raffinement digne des meilleures berlines de luxe.",
-  };
+  useEffect(() => {
+    const fetchVehicle = async () => {
+      try {
+        const response = await fetch(`/api/cars/${params.id}`);
+        if (!response.ok) {
+          throw new Error('Erreur lors de la récupération du véhicule');
+        }
+        const data = await response.json();
+        setVehicle(data);
+      } catch (error) {
+        console.error('Erreur:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const fetchUnavailableDates = async () => {
+      try {
+        const response = await fetch(`/api/reservations/unavailable/${params.id}`);
+        if (!response.ok) {
+          throw new Error('Erreur lors de la récupération des dates indisponibles');
+        }
+        const data = await response.json();
+        setUnavailableDates(data.map((date: string) => new Date(date)));
+      } catch (error) {
+        console.error('Erreur:', error);
+      }
+    };
+
+    fetchVehicle();
+    fetchUnavailableDates();
+  }, [params.id]);
 
   const calculateTotal = () => {
-    if (!dateRange[0] || !dateRange[1]) return 0;
+    if (!dateRange[0] || !dateRange[1] || !vehicle) return 0;
     const days = differenceInDays(dateRange[1], dateRange[0]) + 1;
-    return days * vehicle.prices.jour;
+    return days * vehicle.daily_price;
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, type: "driverLicense" | "identityCard" | "proofOfAddress") => {
@@ -82,12 +112,14 @@ export default function VehiclePage({ params }: any) {
   };
 
   const nextImage = () => {
+    if (!vehicle) return;
     setCurrentImageIndex((prev) => 
       prev === vehicle.images.length - 1 ? 0 : prev + 1
     );
   };
 
   const prevImage = () => {
+    if (!vehicle) return;
     setCurrentImageIndex((prev) => 
       prev === 0 ? vehicle.images.length - 1 : prev - 1
     );
@@ -103,6 +135,100 @@ export default function VehiclePage({ params }: any) {
         break;
     }
   };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!vehicle) return;
+    
+    setSubmitting(true);
+    setError(null);
+
+    try {
+      // Upload des documents
+      const documentUrls = await Promise.all(
+        Object.values(personalInfo).map(async (file) => {
+          if (!file) return null;
+          
+          const formData = new FormData();
+          formData.append("file", file);
+          formData.append("type", "documents");
+
+          const response = await fetch("/api/upload", {
+            method: "POST",
+            body: formData,
+          });
+
+          if (!response.ok) {
+            throw new Error("Erreur lors de l'upload des documents");
+          }
+
+          const data = await response.json();
+          return data.url;
+        })
+      );
+
+      // Filtrer les URLs nulles
+      const validDocumentUrls = documentUrls.filter((url): url is string => url !== null);
+
+      // Créer la réservation
+      const response = await fetch("/api/reservations", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          carId: params.id,
+          startDate: dateRange[0],
+          endDate: dateRange[1],
+          totalPrice: calculateTotal(),
+          deposit: vehicle.caution,
+          firstName: personalInfo.firstName,
+          lastName: personalInfo.lastName,
+          email: personalInfo.email,
+          phone: personalInfo.phone,
+          birthDate: personalInfo.birthDate,
+          address: personalInfo.address,
+          city: personalInfo.city,
+          postalCode: personalInfo.postalCode,
+          country: personalInfo.country,
+          documents: validDocumentUrls,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Erreur lors de la création de la réservation");
+      }
+
+      // Rediriger vers une page de confirmation
+      router.push("/reservation-confirmation");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Une erreur est survenue");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-black"></div>
+      </div>
+    );
+  }
+
+  if (!vehicle) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen">
+        <h1 className="text-2xl font-bold mb-4">Véhicule non trouvé</h1>
+        <button
+          onClick={() => window.history.back()}
+          className="px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800"
+        >
+          Retour
+        </button>
+      </div>
+    );
+  }
 
   const renderStep = () => {
     switch (step) {
@@ -124,6 +250,9 @@ export default function VehiclePage({ params }: any) {
               nextLabel={<ChevronRight className="w-4 h-4" />}
               prevLabel={<ChevronLeft className="w-4 h-4" />}
               minDate={new Date()}
+              tileDisabled={({ date }) => unavailableDates.some(
+                unavailableDate => date.getTime() === unavailableDate.getTime()
+              )}
             />
             <AnimatePresence mode="wait">
               {dateRange[0] && dateRange[1] && (
@@ -170,7 +299,7 @@ export default function VehiclePage({ params }: any) {
             </button>
             <form 
               className="space-y-6"
-              onSubmit={e => { e.preventDefault(); setStep("payment"); }}
+              onSubmit={handleSubmit}
             >
               <div className="space-y-4 max-h-[50dvh] overflow-y-scroll">
                 <div className="grid grid-cols-2 gap-4">
@@ -344,10 +473,17 @@ export default function VehiclePage({ params }: any) {
 
               <button
                 type="submit"
-                className="w-full bg-black text-white py-4 rounded-lg hover:bg-gray-900 transition-colors duration-300"
+                disabled={submitting}
+                className="w-full bg-black text-white py-4 rounded-lg hover:bg-gray-900 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Procéder au paiement
+                {submitting ? 'Envoi en cours...' : 'Procéder au paiement'}
               </button>
+
+              {error && (
+                <div className="text-red-500 text-sm mt-2">
+                  {error}
+                </div>
+              )}
             </form>
           </motion.div>
         );
@@ -377,7 +513,7 @@ export default function VehiclePage({ params }: any) {
                 </div>
                 <div className="flex justify-between items-center">
                   <span>Caution</span>
-                  <span className="font-semibold">{vehicle.prices.acompte}€</span>
+                  <span className="font-semibold">{vehicle.caution}€</span>
                 </div>
                 <div className="flex justify-between items-center pt-3 border-t">
                   <span>Acompte (25%)</span>
@@ -451,18 +587,32 @@ export default function VehiclePage({ params }: any) {
             <div>
               <h2 className="text-2xl font-semibold mb-6">Caractéristiques</h2>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                {Object.entries(vehicle.specs).map(([key, value], index) => (
-                  <motion.div 
-                    key={key}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    className="bg-gray-50 p-6 rounded-lg hover:bg-gray-100 transition-colors duration-300"
-                  >
-                    <p className="text-gray-500 text-sm mb-1">{key}</p>
-                    <p className="font-semibold text-lg">{value}</p>
-                  </motion.div>
-                ))}
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="bg-gray-50 p-6 rounded-lg hover:bg-gray-100 transition-colors duration-300"
+                >
+                  <p className="text-gray-500 text-sm mb-1">Puissance</p>
+                  <p className="font-semibold text-lg">{vehicle.hp} ch</p>
+                </motion.div>
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 }}
+                  className="bg-gray-50 p-6 rounded-lg hover:bg-gray-100 transition-colors duration-300"
+                >
+                  <p className="text-gray-500 text-sm mb-1">Places</p>
+                  <p className="font-semibold text-lg">{vehicle.seats}</p>
+                </motion.div>
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                  className="bg-gray-50 p-6 rounded-lg hover:bg-gray-100 transition-colors duration-300"
+                >
+                  <p className="text-gray-500 text-sm mb-1">Catégorie</p>
+                  <p className="font-semibold text-lg">{vehicle.category}</p>
+                </motion.div>
               </div>
             </div>
 
@@ -474,18 +624,41 @@ export default function VehiclePage({ params }: any) {
             <div>
               <h2 className="text-2xl font-semibold mb-6">Tarifs</h2>
               <div className="grid grid-cols-2 gap-4">
-                {Object.entries(vehicle.prices).map(([key, value], index) => (
-                  <motion.div 
-                    key={key}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    className="bg-gray-50 p-6 rounded-lg hover:bg-gray-100 transition-colors duration-300"
-                  >
-                    <p className="text-gray-500 text-sm mb-1">{key}</p>
-                    <p className="font-semibold text-2xl">{value}€</p>
-                  </motion.div>
-                ))}
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="bg-gray-50 p-6 rounded-lg hover:bg-gray-100 transition-colors duration-300"
+                >
+                  <p className="text-gray-500 text-sm mb-1">Journalier</p>
+                  <p className="font-semibold text-2xl">{vehicle.daily_price}€</p>
+                </motion.div>
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 }}
+                  className="bg-gray-50 p-6 rounded-lg hover:bg-gray-100 transition-colors duration-300"
+                >
+                  <p className="text-gray-500 text-sm mb-1">Weekend</p>
+                  <p className="font-semibold text-2xl">{vehicle.weekend_price}€</p>
+                </motion.div>
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                  className="bg-gray-50 p-6 rounded-lg hover:bg-gray-100 transition-colors duration-300"
+                >
+                  <p className="text-gray-500 text-sm mb-1">Semaine</p>
+                  <p className="font-semibold text-2xl">{vehicle.week_price}€</p>
+                </motion.div>
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                  className="bg-gray-50 p-6 rounded-lg hover:bg-gray-100 transition-colors duration-300"
+                >
+                  <p className="text-gray-500 text-sm mb-1">Caution</p>
+                  <p className="font-semibold text-2xl">{vehicle.caution}€</p>
+                </motion.div>
               </div>
             </div>
           </motion.div>

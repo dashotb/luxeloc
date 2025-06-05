@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
   output   = "../src/generated/prisma"
@@ -14,25 +8,94 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
 model User {
-  id       String @id @default(uuid())
-  name     String
-  role     String
-  email    String @unique
-  password String
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  password      String?
+  emailVerified DateTime?
+  image         String?
+  role          Role      @default(USER)
+  accounts      Account[]
+  sessions      Session[]
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
 }
 
 model Car {
-  id            String @id @default(uuid())
+  id            String        @id @default(cuid())
   name          String
   brand         String
+  images        String[]
   hp            Int
   seats         Int
   category      String
   daily_price   Float
   weekend_price Float
   week_price    Float
-  caution       Float @default(0)
   description   String
-  images        String[]
+  caution       Float
+  reservations  Reservation[]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt  @default(now())
+}
+
+model Reservation {
+  id          String   @id @default(cuid())
+  startDate   DateTime
+  endDate     DateTime
+  status      String   @default("PENDING") // PENDING, CONFIRMED, CANCELLED
+  totalPrice  Float
+  deposit     Float
+  firstName   String
+  lastName    String
+  email       String
+  phone       String
+  birthDate   DateTime
+  address     String
+  city        String
+  postalCode  String
+  country     String
+  documents   String[] // URLs des documents uploadés
+  car         Car      @relation(fields: [carId], references: [id])
+  carId       String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+enum Role {
+  USER
+  ADMIN
 }

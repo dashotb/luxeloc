@@ -5,7 +5,7 @@ import Services from "@/components/home/Services";
 
 export default function Home() {
   return (
-    <main className="max-w-screen overflow-hidden">
+    <main className="max-w-screen overflow-hidden mt-8">
       <Hero/>
       <About/>
       <Services/>
