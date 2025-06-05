@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -68,30 +69,30 @@ model Car {
   caution       Float
   reservations  Reservation[]
   createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt  @default(now())
+  updatedAt     DateTime      @default(now()) @updatedAt
 }
 
 model Reservation {
-  id          String   @id @default(cuid())
-  startDate   DateTime
-  endDate     DateTime
-  status      String   @default("PENDING") // PENDING, CONFIRMED, CANCELLED
-  totalPrice  Float
-  deposit     Float
-  firstName   String
-  lastName    String
-  email       String
-  phone       String
-  birthDate   DateTime
-  address     String
-  city        String
-  postalCode  String
-  country     String
-  documents   String[] // URLs des documents uploadés
-  car         Car      @relation(fields: [carId], references: [id])
-  carId       String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id         String   @id @default(cuid())
+  startDate  DateTime
+  endDate    DateTime
+  status     String   @default("PENDING") // PENDING, CONFIRMED, CANCELLED
+  totalPrice Float
+  deposit    Float
+  firstName  String
+  lastName   String
+  email      String
+  phone      String
+  birthDate  DateTime
+  address    String
+  city       String
+  postalCode String
+  country    String
+  documents  String[] // URLs des documents uploadés
+  car        Car      @relation(fields: [carId], references: [id])
+  carId      String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
 enum Role {
