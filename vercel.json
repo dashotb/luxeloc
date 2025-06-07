@@ -6,7 +6,9 @@
       "use": "@vercel/next",
       "config": {
         "nodeVersion": "18.x",
-        "maxLambdaSize": "50mb"
+        "maxLambdaSize": "50mb",
+        "buildCommand": "next build",
+        "installCommand": "npm install --legacy-peer-deps"
       }
     }
   ],

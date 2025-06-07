@@ -32,22 +32,25 @@ const nextConfig = {
   swcMinify: true,
   // Configuration expérimentale
   experimental: {
-    // Désactiver l'optimisation CSS qui cause des problèmes
     optimizeCss: false,
-    scrollRestoration: true,
   },
-  // Désactiver la collecte des traces de build
+  // Configuration de sortie
   output: 'standalone',
-  // Désactiver la compression
-  compress: false,
-  // Forcer le rendu dynamique pour toutes les pages
-  staticPageGenerationTimeout: 0,
-  // Désactiver la génération statique
-  outputFileTracing: false,
-  // Désactiver la génération de pages statiques
-  generateStaticParams: false,
-  // Forcer le rendu dynamique
+  // Activer la compression
+  compress: true,
+  // Configuration du rendu
+  staticPageGenerationTimeout: 120,
+  // Activer le traçage des fichiers
+  outputFileTracing: true,
+  // Configuration des paramètres dynamiques
   dynamicParams: true,
+  // Configuration du build
+  distDir: '.next',
+  // Configuration du cache
+  onDemandEntries: {
+    maxInactiveAge: 60 * 60 * 1000,
+    pagesBufferLength: 5,
+  },
 };
 
 module.exports = nextConfig;
