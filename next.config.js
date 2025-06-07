@@ -32,20 +32,12 @@ const nextConfig = {
   swcMinify: true,
   // Configuration expérimentale
   experimental: {
-    // Désactiver l'optimisation CSS qui cause des problèmes
     optimizeCss: false,
-    scrollRestoration: true,
   },
   // Configuration de sortie
   output: 'standalone',
   // Activer la compression
   compress: true,
-  // Configuration du rendu
-  staticPageGenerationTimeout: 120,
-  // Activer le traçage des fichiers
-  outputFileTracing: true,
-  // Configuration des paramètres dynamiques
-  dynamicParams: true,
 };
 
 module.exports = nextConfig;
