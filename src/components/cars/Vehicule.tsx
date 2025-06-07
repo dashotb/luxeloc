@@ -38,7 +38,11 @@ interface Vehicle {
   caution: number;
 }
 
-export default function Vehicule(id: any) {
+interface VehiculeProps {
+  id: string;
+}
+
+export default function Vehicule({ id }: VehiculeProps) {
     const [step, setStep] = useState<BookingStep>("calendar");
     const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([null, null]);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -74,6 +78,7 @@ export default function Vehicule(id: any) {
           setVehicle(data);
         } catch (error) {
           console.error('Erreur:', error);
+          setError('Impossible de charger les informations du véhicule');
         } finally {
           setLoading(false);
         }
@@ -89,6 +94,7 @@ export default function Vehicule(id: any) {
           setUnavailableDates(data.map((date: string) => new Date(date)));
         } catch (error) {
           console.error('Erreur:', error);
+          setError('Impossible de charger les dates indisponibles');
         }
       };
   
@@ -210,22 +216,35 @@ export default function Vehicule(id: any) {
   
     if (loading) {
       return (
-        <div className="flex justify-center items-center min-h-screen">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-black"></div>
+        <div className="flex items-center justify-center min-h-screen">
+          <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-orange-500"></div>
         </div>
       );
     }
-    
-  
+
+    if (error) {
+      return (
+        <div className="flex flex-col items-center justify-center min-h-screen">
+          <p className="text-red-500 text-xl mb-4">{error}</p>
+          <button
+            onClick={() => router.push('/')}
+            className="px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600"
+          >
+            Retour à l'accueil
+          </button>
+        </div>
+      );
+    }
+
     if (!vehicle) {
       return (
         <div className="flex flex-col items-center justify-center min-h-screen">
-          <h1 className="text-2xl font-bold mb-4">Véhicule non trouvé</h1>
+          <p className="text-xl mb-4">Véhicule non trouvé</p>
           <button
-            onClick={() => window.history.back()}
-            className="px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800"
+            onClick={() => router.push('/')}
+            className="px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600"
           >
-            Retour
+            Retour à l'accueil
           </button>
         </div>
       );
@@ -678,4 +697,5 @@ export default function Vehicule(id: any) {
           </motion.div>
         </motion.div>
       </main>
-    );}
+    );
+}
