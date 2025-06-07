@@ -32,7 +32,9 @@ const nextConfig = {
   swcMinify: true,
   // Configuration expérimentale
   experimental: {
+    // Désactiver l'optimisation CSS qui cause des problèmes
     optimizeCss: false,
+    scrollRestoration: true,
   },
   // Désactiver la collecte des traces de build
   output: 'standalone',
@@ -46,22 +48,6 @@ const nextConfig = {
   generateStaticParams: false,
   // Forcer le rendu dynamique
   dynamicParams: true,
-  // Configuration du build
-  distDir: '.next',
-  // Configuration du cache
-  onDemandEntries: {
-    maxInactiveAge: 60 * 60 * 1000,
-    pagesBufferLength: 5,
-  },
-  // Configuration de PostCSS
-  postcss: {
-    plugins: {
-      'postcss-import': {},
-      'tailwindcss/nesting': 'postcss-nesting',
-      tailwindcss: {},
-      autoprefixer: {},
-    },
-  },
 };
 
 module.exports = nextConfig;

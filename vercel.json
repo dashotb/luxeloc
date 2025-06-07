@@ -6,9 +6,7 @@
       "use": "@vercel/next",
       "config": {
         "nodeVersion": "18.x",
-        "maxLambdaSize": "50mb",
-        "buildCommand": "next build",
-        "installCommand": "npm install"
+        "maxLambdaSize": "50mb"
       }
     }
   ],
