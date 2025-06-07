@@ -34,15 +34,17 @@ const nextConfig = {
   experimental: {
     optimizeCss: false,
   },
-  // Configuration de sortie
+  // Désactiver la collecte des traces de build
   output: 'standalone',
-  // Activer la compression
-  compress: true,
-  // Configuration du rendu
-  staticPageGenerationTimeout: 120,
-  // Activer le traçage des fichiers
-  outputFileTracing: true,
-  // Configuration des paramètres dynamiques
+  // Désactiver la compression
+  compress: false,
+  // Forcer le rendu dynamique pour toutes les pages
+  staticPageGenerationTimeout: 0,
+  // Désactiver la génération statique
+  outputFileTracing: false,
+  // Désactiver la génération de pages statiques
+  generateStaticParams: false,
+  // Forcer le rendu dynamique
   dynamicParams: true,
   // Configuration du build
   distDir: '.next',

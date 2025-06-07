@@ -1,11 +1,10 @@
 import Vehicule from "@/components/cars/Vehicule";
 import { Suspense } from "react";
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
 
 export default function VehiclePage({ params }: { params: { id: string } }) {
   return (
+<<<<<<< HEAD
     <main className="min-h-screen bg-white">
       <Suspense fallback={
         <div className="flex items-center justify-center min-h-screen">
@@ -16,4 +15,8 @@ export default function VehiclePage({ params }: { params: { id: string } }) {
       </Suspense>
     </main>
   );
+=======
+    <Vehicule id={params.id} />
+  )
+>>>>>>> parent of 838bb17 (bon)
 }
