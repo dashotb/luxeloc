@@ -39,7 +39,7 @@ const nextConfig = {
   // Désactiver la collecte des traces de build
   output: 'standalone',
   // Désactiver la compression
-  compress: true,
+  compress: false,
   // Forcer le rendu dynamique pour toutes les pages
   staticPageGenerationTimeout: 0,
   // Désactiver la génération statique
