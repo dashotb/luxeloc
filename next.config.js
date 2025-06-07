@@ -36,17 +36,15 @@ const nextConfig = {
     optimizeCss: false,
     scrollRestoration: true,
   },
-  // Désactiver la collecte des traces de build
+  // Configuration de sortie
   output: 'standalone',
-  // Désactiver la compression
-  compress: false,
-  // Forcer le rendu dynamique pour toutes les pages
-  staticPageGenerationTimeout: 0,
-  // Désactiver la génération statique
-  outputFileTracing: false,
-  // Désactiver la génération de pages statiques
-  generateStaticParams: false,
-  // Forcer le rendu dynamique
+  // Activer la compression
+  compress: true,
+  // Configuration du rendu
+  staticPageGenerationTimeout: 120,
+  // Activer le traçage des fichiers
+  outputFileTracing: true,
+  // Configuration des paramètres dynamiques
   dynamicParams: true,
 };
 
