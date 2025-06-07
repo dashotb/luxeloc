@@ -51,6 +51,15 @@ const nextConfig = {
     maxInactiveAge: 60 * 60 * 1000,
     pagesBufferLength: 5,
   },
+  // Configuration de PostCSS
+  postcss: {
+    plugins: {
+      'postcss-import': {},
+      'tailwindcss/nesting': 'postcss-nesting',
+      tailwindcss: {},
+      autoprefixer: {},
+    },
+  },
 };
 
 module.exports = nextConfig;
