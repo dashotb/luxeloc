@@ -44,13 +44,6 @@ const nextConfig = {
   outputFileTracing: true,
   // Configuration des paramètres dynamiques
   dynamicParams: true,
-  // Configuration du build
-  distDir: '.next',
-  // Configuration du cache
-  onDemandEntries: {
-    maxInactiveAge: 60 * 60 * 1000,
-    pagesBufferLength: 5,
-  },
 };
 
 module.exports = nextConfig;

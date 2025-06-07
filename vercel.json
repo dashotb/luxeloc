@@ -1,25 +1,5 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/next",
-      "config": {
-        "nodeVersion": "18.x",
-        "maxLambdaSize": "50mb",
-        "buildCommand": "npm run build",
-        "installCommand": "npm install"
-      }
-    }
-  ],
-  "build": {
-    "env": {
-      "NODE_ENV": "production"
-    }
-  },
-  "env": {
-    "NODE_ENV": "production"
-  },
   "functions": {
     "api/**/*.ts": {
       "memory": 1024,
@@ -32,5 +12,8 @@
       "dest": "/vehicule/[id]",
       "continue": true
     }
-  ]
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  }
 }
