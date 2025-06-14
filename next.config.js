@@ -30,6 +30,15 @@ const nextConfig = {
   compress: true,
   experimental: {
     scrollRestoration: true,
+    // Désactiver la collecte des traces qui cause l'erreur
+    outputFileTracingRoot: undefined,
+    outputFileTracingExcludes: {
+      '*': [
+        'node_modules/@swc/core-linux-x64-gnu',
+        'node_modules/@swc/core-linux-x64-musl',
+        'node_modules/@esbuild/linux-x64',
+      ],
+    },
   },
   // Optimisations pour Vercel
   poweredByHeader: false,
