@@ -1,16 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'images.pexels.com'
-      },
-      {
-        protocol: 'https',
-        hostname: 'firebasestorage.googleapis.com'
-      }
-    ],
+    domains: ['images.pexels.com', 'firebasestorage.googleapis.com'],
   },
   // Configuration pour le build
   webpack: (config, { isServer }) => {
