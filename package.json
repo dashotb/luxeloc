@@ -6,7 +6,7 @@
     "dev": "next dev",
     "clean": "rm -rf .next",
     "postinstall": "prisma generate",
-    "build": "npm run clean && prisma generate && next build && prisma db pull",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "prisma:generate": "prisma generate",
