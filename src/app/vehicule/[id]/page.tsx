@@ -16,7 +16,8 @@ export const revalidate = 0;
 function VehiclePage({ params }: { params: { id: string } }) {
   return (
     <main className="min-h-screen bg-white">
-      <Vehicule id={params.id} />
+      {/* <Vehicule id={params.id} /> */}
+      <h1>{params.id}</h1>
     </main>
   );
 }
