@@ -5,9 +5,12 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'images.pexels.com'
+      },
+      {
+        protocol: 'https',
+        hostname: 'firebasestorage.googleapis.com'
       }
     ],
-    domains: ['firebasestorage.googleapis.com'],
   },
   // Configuration pour le build
   webpack: (config, { isServer }) => {
@@ -34,6 +37,9 @@ const nextConfig = {
   output: 'standalone',
   // Activer la compression
   compress: true,
+  experimental: {
+    scrollRestoration: true,
+  },
 };
 
 module.exports = nextConfig;
