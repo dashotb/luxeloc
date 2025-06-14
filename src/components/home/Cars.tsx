@@ -101,7 +101,7 @@ export default function Cars() {
                   <span className="text-gray-500">/jour</span>
                 </div>
                 <h3 className="font-semibold text-lg md:text-xl mb-4 md:mb-6">{vehicle.name}</h3>
-                <Link href={`/vehicule/${vehicle.id}`}>
+                <Link href={`/vehicules/${vehicle.id}`}>
                   <button className="w-full flex flex-row py-3 hover:bg-black hover:text-white transition transition duration-300 group">
                     <p className="mx-auto flex flex-row ">
                       Réserver Maintenant

@@ -89,7 +89,7 @@ export default function List({ cars, loading }: ListProps) {
           variants={item}
           className="group bg-white shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-500 overflow-hidden"
         >
-          <Link href={`/vehicule/${car.id}`}>
+          <Link href={`/vehicules/${car.id}`}>
             <div className="relative aspect-[16/10] overflow-hidden ">
               <Image 
                 src={car.images[0]} 
