@@ -36,6 +36,10 @@ const nextConfig = {
   reactStrictMode: true,
   // Désactiver la collecte des traces de build qui cause l'erreur
   outputFileTracing: false,
+  // Optimisations pour les composants client
+  compiler: {
+    styledComponents: true,
+  },
 };
 
 module.exports = nextConfig;
