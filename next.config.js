@@ -31,6 +31,11 @@ const nextConfig = {
   experimental: {
     scrollRestoration: true,
   },
+  // Optimisations pour Vercel
+  poweredByHeader: false,
+  reactStrictMode: true,
+  // Désactiver la collecte des traces de build qui cause l'erreur
+  outputFileTracing: false,
 };
 
 module.exports = nextConfig;
