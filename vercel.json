@@ -19,13 +19,5 @@
   },
   "env": {
     "NODE_ENV": "production"
-  },
-
-  "routes": [
-    {
-      "src": "/vehicule/(.*)",
-      "dest": "/vehicule/[id]",
-      "continue": true
-    }
-  ]
+  }
 }
